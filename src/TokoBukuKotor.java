@@ -72,18 +72,6 @@ class Buku implements Produk {
     }
 }
 
-class EmailSender {
-    void kirim(String alamat, String isi) {
-        System.out.println("[EMAIL " + alamat + "] " + isi);
-    }
-}
-
-class FileRiwayat {
-    void simpan(String baris) {
-        System.out.println("[FILE riwayat.txt] " + baris);
-    }
-}
-
 class Toko {
     ArrayList<Buku> keranjang = new ArrayList<>();
     EmailSender email = new EmailSender();
@@ -114,7 +102,7 @@ class Toko {
     String keterangan(Buku b) {
         switch (b.jenis) {
             case "CETAK":
-                return b.getBeratGram() + " gram, ongkir " + formatRupiah(hitungOngkir(b));
+                return b.getBeratGram() + " gram, ongkir " + FormatRupiah.format(hitungOngkir(b));
             case "DIGITAL":
                 return b.ukuranMB + " MB, diskon 20%";
             case "AUDIO":
@@ -152,16 +140,16 @@ class Toko {
         int total = 0;
         for (Buku b : keranjang) {
             System.out.println(b.getJudul() + " (" + b.getPenulis() + ")");
-            System.out.println("  Harga       : " + formatRupiah(b.getHarga()));
+            System.out.println("  Harga       : " + FormatRupiah.format(b.getHarga()));
             System.out.println("  Keterangan  : " + keterangan(b));
-            System.out.println("  Harga akhir : " + formatRupiah(hargaAkhir(b)));
+            System.out.println("  Harga akhir : " + FormatRupiah.format(hargaAkhir(b)));
             total += hargaAkhir(b);
         }
         int bayar = totalBayar(metode, total);
         System.out.println("-----------------------------------------");
-        System.out.println("Total belanja : " + formatRupiah(total));
+        System.out.println("Total belanja : " + FormatRupiah.format(total));
         System.out.println("Metode bayar  : " + namaMetode(metode));
-        System.out.println("Total bayar   : " + formatRupiah(bayar));
+        System.out.println("Total bayar   : " + FormatRupiah.format(bayar));
 
         int totalBerat = 0;
         for (Buku b : keranjang) {
@@ -179,12 +167,8 @@ class Toko {
         }
         System.out.println("-----------------------------------------");
 
-        riwayat.simpan(pelanggan + ";" + keranjang.size() + " buku;" + formatRupiah(bayar));
-        email.kirim(alamatEmail, "Terima kasih " + pelanggan + ", total bayar " + formatRupiah(bayar));
-    }
-
-    String formatRupiah(int angka) {
-        return String.format("Rp%,d", angka).replace(',', '.');
+        riwayat.simpan(pelanggan + ";" + keranjang.size() + " buku;" + FormatRupiah.format(bayar));
+        email.kirim(alamatEmail, "Terima kasih " + pelanggan + ", total bayar " + FormatRupiah.format(bayar));
     }
 }
 
