@@ -7,29 +7,7 @@ class Toko {
         keranjang.tambah(produk);
     }
 
-    String namaMetode(String metode) {
-        if (metode.equals("TUNAI")) {
-            return "Tunai";
-        } else if (metode.equals("TRANSFER")) {
-            return "Transfer (+Rp2.500)";
-        } else if (metode.equals("EWALLET")) {
-            return "E-Wallet (diskon 2%)";
-        }
-        return "?";
-    }
-
-    int totalBayar(String metode, int totalBelanja) {
-        if (metode.equals("TUNAI")) {
-            return totalBelanja;
-        } else if (metode.equals("TRANSFER")) {
-            return totalBelanja + 2500;
-        } else if (metode.equals("EWALLET")) {
-            return totalBelanja * 98 / 100;
-        }
-        return totalBelanja;
-    }
-
-    void checkout(String pelanggan, String alamatEmail, String metode) {
+    void checkout(String pelanggan, String alamatEmail, MetodeBayar metode) {
         System.out.println("================ STRUK =================");
         System.out.println("Pelanggan : " + pelanggan);
         for (Produk p : keranjang.getProduk()) {
@@ -39,10 +17,10 @@ class Toko {
             System.out.println("  Harga akhir : " + FormatRupiah.format(p.hargaAkhir()));
         }
         int total = keranjang.totalBelanja();
-        int bayar = totalBayar(metode, total);
+        int bayar = metode.hitungTotalBayar(total);
         System.out.println("-----------------------------------------");
         System.out.println("Total belanja : " + FormatRupiah.format(total));
-        System.out.println("Metode bayar  : " + namaMetode(metode));
+        System.out.println("Metode bayar  : " + metode.getNama());
         System.out.println("Total bayar   : " + FormatRupiah.format(bayar));
         System.out.println("Berat kiriman : " + keranjang.totalBeratGram() + " gram");
 
@@ -64,6 +42,6 @@ public class TokoBukuKotor {
         toko.tambah(new BukuCetak("Algoritma Dasar", "Jane Smith", 95000, 400));
         toko.tambah(new BukuDigital("Belajar OOP", "Ani Wijaya", 80000, 12.5));
         toko.tambah(new BukuAudio("Kisah Programmer", "Budi Santoso", 60000, 240));
-        toko.checkout("Sari", "sari@mail.com", "EWALLET");
+        toko.checkout("Sari", "sari@mail.com", new EWallet());
     }
 }
