@@ -1,4 +1,4 @@
-public class TokoBukuKotor {
+public class TokoBukuSolid {
     public static void main(String[] args) {
         Keranjang keranjang = new Keranjang();
         keranjang.tambah(new BukuCetak("Pemrograman Java", "John Doe", 120000, 750));
